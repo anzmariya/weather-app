@@ -1,0 +1,200 @@
+<!-- weather details
+------------------------
+country
+humidity
+wind
+pressure
+time 
+
+openweatherupi
+current weather and brodcast-> api-> current ewather data(api doc)->api using cityname
+the api is https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+key : 3db6cb3f57b2fc7b2755fb0b51770747
+
+https://api.openweathermap.org/data/2.5/weather?q={city name}&appid=3db6cb3f57b2fc7b2755fb0b51770747-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecasting</title>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bungee+Spice&family=Courgette&family=Dancing+Script:wght@500&family=Kalam:wght@700&family=Libre+Baskerville&family=Lisu+Bosa&family=Lobster&family=Lobster+Two&family=Ma+Shan+Zheng&family=Montserrat:wght@300&family=Noto+Sans+Cypro+Minoan&family=Play&family=Poppins&family=Roboto:wght@100&family=Shadows+Into+Light&family=Ysabeau+SC&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        /* small screen */
+        @media (min-width: 576px) {  
+            
+        }
+        /* large screen */
+        @media (min-width: 992px) {
+            .margin1{border-right: solid grey 2px;}
+            .padding1{padding-right: 0px;}
+            .margin2{margin-left: 12px;}
+            
+         }
+
+    </style>
+</head>
+<body>
+    <div style="height: 100vh;" class="d-flex justify-content-center align-items-center w-100" id="clock">
+        <div class="row">
+            <div class="col-lg-3 col-sm-1"></div>
+            <div class="col-lg-6 col-sm-10 rounded shadow bg-body" style="opacity: 0.8;">
+                <div class="row">
+                    <div class="row">
+                        <h1 class="text-warning text-center" style="font-family: 'Kalam', cursive;">Weather</h1>
+                    </div>
+                    <div class="col-lg-6 margin1">
+                        <div class="card bg-dark text-white">
+                            <img src="https://cdn.jim-nielsen.com/ios/512/weather-2021-12-07.png" class="card-img" alt="...">
+                            <div class="card-img-overlay">
+                                <div style="font-family: 'Kalam', cursive;" id="result"></div>
+                                <div style="font-family: 'Kalam', cursive;" class="position-absolute bottom-0 start-2" id="result1"></div>
+                              
+                            </div>
+                            
+                          </div>
+                          <h5 class="mt-2" style="font-family: 'Kalam', cursive;" id="datedis"></h5>
+                    </div>
+                    
+                        <div class="col-lg-6 middle">
+                            <form id="myForm">
+                                <input type="text" style="font-family: 'Kalam', cursive;" placeholder="Enter a city name" id="cname">
+        
+                                <div class="row">
+                                    <div class="col-lg-6"><button type="button" class="btn btn-dark mt-2 me-2 mb-2" onclick="search()">Search</button></div>
+                                    <div class="col-lg-6 padding1"><button type="reset" class="btn btn-dark mt-2 mb-2 margin2" onclick="refresh()">Refresh</button></div>
+                                </div>
+                                <div>
+                                    <h4 style="font-family: 'Kalam', cursive;">Country</h4>
+                                    <h5 style="font-family: 'Kalam', cursive;" id="countrydis"></h5>
+                                    <h4 style="font-family: 'Kalam', cursive;">Humidity</h4>
+                                    <h5 style="font-family: 'Kalam', cursive;" id="humiditydis"></h5>
+                                    <h4 style="font-family: 'Kalam', cursive;">Wind</h4>
+                                    <h5 style="font-family: 'Kalam', cursive;" id="winddis"></h5>
+                                    <h4 style="font-family: 'Kalam', cursive;">Pressure</h4>
+                                    <h5 style="font-family: 'Kalam', cursive;" id="pressuredis"></h5>
+                                    
+                                    
+
+                                </div>
+                            </form>
+                        </div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-1"></div>
+        </div>
+
+    </div>
+</body>
+<script>
+   function getTime(){
+        const time=new Date()
+        console.log(time);
+        let hour=time.getHours()
+        console.log(hour);
+        let minute=time.getMinutes()
+        console.log(minute);
+        let seconds=time.getSeconds()
+        console.log(seconds);
+
+        const time1=hour+":"+minute+":"+seconds
+        console.log(time1);
+       
+        if(hour>=12){
+            // night
+            clock.style.backgroundImage="url('https://images4.alphacoders.com/841/841629.jpg')"; 
+            clock.style.backgroundOrigin = "content-box";
+            
+        }
+        else{
+            // sunny
+            clock.style.backgroundImage= "url('https://wallpaperaccess.com/full/535675.jpg')";
+            clock.style.backgroundOrigin = "content-box";
+            
+        }
+        setTimeout(()=>{getTime()},1000)
+    }
+    getTime()
+
+
+    function search(){
+        let http=new XMLHttpRequest()
+
+        let cityname=cname.value
+        console.log(cityname);
+        http.open('get',`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=3db6cb3f57b2fc7b2755fb0b51770747`)
+
+        http.send()
+
+        console.log(http.readyState);
+        http.onreadystatechange=()=>{
+            console.log(http.readyState);
+            if(http.readyState==4){
+                if(http.status>=200 && http.status<=300){
+                    console.log(http.responseText);
+                    let data=JSON.parse(http.responseText)
+                    console.log(data);
+
+                    let name=data.name
+                    console.log(`name: ${name}`);
+                    let humidity=data.main.humidity
+                    console.log(`humidity: ${humidity}`);
+                    let pressure=data.main.pressure
+                    console.log(`pressure : ${pressure}`);
+                    let country=data.sys.country
+                    console.log(country);
+                    let wind=data.wind.speed
+                    let des=data.weather
+                    console.log(des);
+
+                    let date=new Date()
+                    let hr=date.getHours()
+                    let min=date.getMinutes()
+                    
+                  
+                    result.innerHTML=`
+                    <h3>${name}, ${country}</h3><br>`
+                    result1.innerHTML=`
+                    <h3>${des.map((item)=>
+                            `<h3>${item.main}</h3>
+                            <h3>${item.description}</h3>`)}</h3>`
+
+
+                    countrydis.innerHTML=`${country}`
+                    countrydis.style.color="green"
+                    humiditydis.innerHTML=`${humidity} %`
+                    humiditydis.style.color="green"
+                    winddis.innerHTML=`${wind} Kmph`
+                    winddis.style.color="green"
+                    pressuredis.innerHTML=`${pressure}`
+                    pressuredis.style.color="green"
+                    datedis.innerHTML=`${hr}:${min} ${hr>=12?"PM":"AM"}`
+                    datedis.style.color="black"
+                }
+                else{
+                    alert("Enter a valid City name")
+                }
+            }
+        }
+    }
+
+    function refresh(){
+        cname.innerHTML=`cname.value=""`
+    }
+</script>
+</html>
